@@ -13,13 +13,18 @@ typedef long double ld;
 using namespace std;
 
 int main() {
-    string s = "qwertyuiopasdfghjklzxcvbnm";
-    char c; cin >> c;
-    for (int i = 0; i < s.size(); ++i) {
-        if (s[i] == c) {
-            cout << s[(i + 1) % s.size()];
-            return 0;
-        }
+    int a = 0, b = 0;
+    for (int i = 0; i < 4; ++i) {
+        int t1, t2;
+        cin >> t1 >> t2;
+        a += t1; b += t2;
+    }
+    if (a > b) {
+        cout << 1;
+    } else if (a == b) {
+        cout << "DRAW";
+    } else {
+        cout << 2;
     }
     return 0;
 }

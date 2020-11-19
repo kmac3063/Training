@@ -13,13 +13,16 @@ typedef long double ld;
 using namespace std;
 
 int main() {
-    string s = "qwertyuiopasdfghjklzxcvbnm";
-    char c; cin >> c;
-    for (int i = 0; i < s.size(); ++i) {
-        if (s[i] == c) {
-            cout << s[(i + 1) % s.size()];
-            return 0;
-        }
+    int n, k;
+    cin >> n >> k;
+    int pr = 1, sm = 0;
+    while (n) {
+        pr *= (n % k);
+        sm += (n % k);
+        n /= k;
     }
+
+    cout << pr - sm;
+
     return 0;
 }

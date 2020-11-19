@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <cmath>
 #include <map>
-#include <set>
 
 typedef long long ll;
 typedef unsigned long long ull;
@@ -12,14 +11,20 @@ typedef long double ld;
 
 using namespace std;
 
+int sum(int n) {
+    int ans = 0;
+    while (n) {
+        ans += n%10;
+        n/=10;
+    }
+    return ans;
+}
 int main() {
-    string s = "qwertyuiopasdfghjklzxcvbnm";
-    char c; cin >> c;
-    for (int i = 0; i < s.size(); ++i) {
-        if (s[i] == c) {
-            cout << s[(i + 1) % s.size()];
-            return 0;
-        }
+    int n; cin >> n;
+    if (sum(n % 1000) == sum(n / 1000)) {
+        cout << "YES";
+    } else {
+        cout << "NO";
     }
     return 0;
 }
