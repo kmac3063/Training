@@ -10,79 +10,53 @@
 
 using namespace std;
 
-int get(string s, int i, char ch) {
-    s[i] = ch;
-    int ans = 0;
-    for (int j = 0; j < s.size(); ++j) {
-        if (s[j] > s[i]) {
-            ans += abs(j - i);
-        }
-    }
-    return ans;
+void move(vector<pair<int, int>>& v, int i) {
+    auto t1 = v[i + 1];
+    v[i + 1] = v[i];
+    v[i] = v[i + 2];
+    v[i + 2] = t1;
 }
 
 int main() {
-    int t; cin >> t;
-    while (t--) {
-        string s; cin >> s;
+    int test; cin >> test;
+    while (test--) {
         int n; cin >> n;
-        vector<int> v(n);
+        vector<pair<int, int>> v(n);
         for (int i = 0; i < n; ++i) {
-            cin >> v[i];
+            int t; cin >> t;
+            v[i] = {t, i};
+        }
+        auto v1 = v;
+        stable_sort(v1.begin(), v1.end());
+        reverse(v1.begin(), v1.end());
+        vector<int> ans;
+        for (int i = 0; i < v1.size() - 2; ++i) {
+            int ind = v1[i].second;
+            for (int j = 0; j < v.size() - i; ++j) {
+                if (v[j].first == v1[i].first) {
+                    ind = max(ind, j);
+                    break;
+                }
+            }
+            ind++;
+            while (ind < v.size() - i) {
+                int ti = max(0, ind - 2);
+                ans.push_back(ti);
+                move(v, ti);
+                ind++;
+            }
         }
 
-        string ans(n, 'a' - 1);
-        sort(s.begin(), s.end());
-        reverse(s.begin(), s.end());
-
-        int k = 0;
-
-        for (int i = 0; i < n; ++i) {
-            vector<int> tv;
-            for (int j = 0; j < n; ++j) {
-                if (v[j] == 0 && ans[j] == 'a' - 1) {
-                    tv.push_back(j);
-                }
+        if (1/*v[0].first <= v[1].first*/) {
+            cout << ans.size() << endl;
+            for (auto& p : ans) {
+                cout << p + 1 << ' ';
             }
-
-            auto temp = v;
-            if (tv.size() == 0) continue;
-            while (count(s.begin(), s.end(), s[k]) < tv.size()) {
-                k++;
-            }
-            for (int j = 0; j < n; ++j) {
-                if (temp[j] == 0 && ans[j] == 'a' - 1) {
-                    ans[j] = s[k];
-                    continue;
-                }
-
-                for (auto x : tv) {
-                    v[j] -= abs(x - j);
-                }
-            }
-            k++;
-            while (k < s.size() && s[k] == s[k - 1]) k++;
+            cout << endl;
+        } else {
+            cout << -1 << endl;
         }
-
-        cout << ans << endl;
     }
+
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
