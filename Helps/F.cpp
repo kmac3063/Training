@@ -14,7 +14,9 @@ int main() {
         inputfile >> v[i];
     }
     if (n == 1) {
-        outputfile << 1 << endl << v[0];
+        outputfile << "1 1";
+        inputfile.close();
+        outputfile.close();
         return 0;
     }
     vector<vector<vector<int>>> res(n, vector<vector<int>>(n, vector<int>()));
@@ -44,9 +46,15 @@ int main() {
         }
     }
 
-    outputfile << ans << endl;
+    outputfile << ans << ' ';
     for (int i = 0; i < ans; ++i) {
-        outputfile << res[first][second][i] + 1 << ' ';
+        outputfile << res[first][second][i] + 1;
+        if (i != ans - 1) {
+            outputfile << ' ';
+        }
     }
+    outputfile << endl;
+    inputfile.close();
+    outputfile.close();
     return 0;
 }
