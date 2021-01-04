@@ -10,108 +10,114 @@
 
 using namespace std;
 
-vector<vector<int>> v;
-vector<set<int>> my;
-vector<int> topsort;
+vector<vector<int>> g;
 vector<int> used;
-bool cycle;
+vector<int> ord;
 
 void dfs(int i) {
     used[i] = 1;
-    for (int j = 0; j < v[i].size(); j++) {
-        if (!used[v[i][j]])
-            dfs(v[i][j]);
+    for (auto j : g[i]) {
+        if (!used[j])
+            dfs(j);
     }
-    topsort.push_back(i);
+    ord.push_back(i);
 }
 
-void newDfs(int i, int p) {
-    used[i] = 1;
-    for (int j = 0; j < v[i].size(); j++) {
-        int to = v[i][j];
-        if (to == p) continue;
-        if (used[to] != 1) {
-            my[i].insert(to);
-            if (used[to] == 0)
-            newDfs(to, i);
-        }
-    }
-    used[i] = 2;
+pair<int, int> m(int a, int b) {
+    return pair<int, int>(min(a, b), max(a, b));
 }
 
-void cycleCheck(int i, int p) {
-    if (cycle) return;
-    used[i] = 1;
-    for (auto& to: my[i]) {
-        if (to == p) continue;
-        if (used[to] == 0) {
-            cycleCheck(to, i);
-        } else if (used[to] == 1) {
-            cycle = 1;
-            return;
-        }
-    }
-    used[i] = 2;
+pair<int, int> m(pair<int, int> p) {
+    int a = p.first, b = p.second;
+    return m(a, b);
 }
 
 int main() {
     int _; cin >> _;
     while (_--) {
-        int n, k;
-        cin >> n >> k;
-        set<pair<int, int>, greater<pair<int, int>>> s;
-        vector<set<int>> v(n, set<int>());
+        int n; cin >> n;
+        ll S; cin >> S;
+        g = vector<vector<int>>(n, vector<int>());
+        ord = vector<int>();
+        map<pair<int, int>, pair<ll, ll>> prs;
+
+        vector<int> w(n);
         for (int i = 0; i < n - 1; ++i) {
             int a, b;
-            cin >> a >> b;
+            cin >> a >> b >> w[i];
             a--, b--;
-            v[a].insert(b);
-            v[b].insert(a);
+            g[a].push_back(b);
+            g[b].push_back(a);
+            prs[m(a, b)] = {w[i], -1};
         }
-        vector<int> lst(n);
+
+        used = vector<int>(n, 0);
+        dfs(0);
+
+//        reverse(ord.begin(), ord.end());
+        vector<int> pos(n);
         for (int i = 0; i < n; ++i) {
-            if (v[i].size() == 1) {
-                lst[*v[i].begin()]++;
+            pos[ord[i]] = i;
+        }
+        vector<ll> cnt(n, 0);
+        for (int i = 0; i < n; ++i) {
+            int v = ord[i];
+            for (auto v1 : g[v]) {
+                if (pos[v1] > pos[v]) {
+                    if (cnt[v] == 0) cnt[v] = 1;
+                    cnt[v1] += cnt[v];
+                }
             }
         }
 
-        for (int i = 0; i < n; ++i) {
-            s.insert({lst[i], i});
+        ll ts = 0;
+        set<pair<ll, int>> s;
+        for (auto [a, p] : prs) {
+            ts += p.first * p.second;
+            s.insert({p.first * p.second, a.first});
         }
 
         int ans = 0;
-        while (s.begin()->first >= k) {
-            auto a = *s.begin();
-            if (s.begin()->first == 1 && v[a.second].size() == 1) {
-                ans += k==1;
-                break;
-            }
-            s.erase(s.begin());
+        while (ts > S) {
+            auto top = *s.begin();
+            s.erase(s.equal_range(top).first);
 
-            vector<int> toRemove;
-            for (int to: v[a.second]) {
-                if (toRemove.size() == k) break;
-                if (v[to].size() == 1) {
-                    toRemove.push_back(to);
-                }
-            }
-            for (int i : toRemove) {
-                v[a.second].erase(i);
-            }
-            a.first -= k;
-            lst[a.second] -= k;
-            s.insert(a);
+            ll b = top.second.first;
+            ll st = b / 2;
 
+            ll oldPrice = top.first;
+            ll newPrice = st * top.second.second;
+
+            ts -= (oldPrice - newPrice);
+
+            top.first = newPrice;
+            top.second.first = st;
+
+            s.insert(top);
             ans++;
-            if (v[a.second].size() == 1) {
-                int to =*v[a.second].begin();
-                s.erase({lst[to], to});
-                lst[to]++;
-                s.insert({lst[to], to});
-            }
         }
         cout << ans << endl;
     }
+    /*
+4 5
+1 2 5
+2 3 5
+3 4 100
 
+100
+7 8
+1 2 2
+2 3 2
+2 4 2
+1 7 2
+7 5 2
+7 6 2
+
+5 5
+1 2 1212
+1 3 2
+1 4 2
+1 5 2
+     */
     return 0;
 }
