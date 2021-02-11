@@ -32,20 +32,43 @@ using namespace std;
 
 #define M (int)(1e9+7)
 
-ll f(ll a) {
-    if (a <= 1) return 1;
-    return a * f(a - 1);
-}
-
 void solve() {
     int n; cin >> n;
-    ll sp = f(n - 1) / (n / 2);
-    pr(sp);
+    vi v(n);
+    read(v);
+    vi dp(n);
+
+    for (int i = 0; i < n; ++i) {
+        dp[i] = INT32_MAX;
+    }
+
+    vi up(n, 0);
+    for (int i = 0; i < n; i++) {
+        int j = int (upper_bound (all(dp), v[i]) - dp.begin());
+        // возрастает
+        if (v[i] >= dp[j - 1]) {
+            dp[j] = v[i];
+            up[j] = 0;
+        } else {
+            if (up[j] == 0) {
+                dp[j] = v[i];
+                up[j] = 1;
+            }
+
+            //Убывает и 1
+            if (up[j] == 1 && dp[j - 1] < v[i])
+                dp[j - 1] = v[i];
+
+        }
+
+        //убывает и 0
+    }
+
 }
 
 int main() {
     int t = 1;
-//    cin >> t;
+    cin >> t;
     while (t--) {
         solve();
     }
