@@ -32,21 +32,30 @@ using namespace std;
 
 #define M (int)(1e9+7)
 
- ll dv(ll v) {
-     ll ans = 1;
-     ll t = 2;
-     while (v) {
-         if (v % 2 == 1) {
-             ans = (ans * t) % M;
-         }
-         t = (t * t) % M;
-         v /= 2;
-     }
-     return ans;
- }
-
 int main() {
-    ll n; cin >> n;
-    pr(dv(n));
+    int n; cin >> n;
+    for (int i = 1; i <= n; i++) {
+        if (i == 1) {
+            pr(0);
+        } else if (i == 2) {
+            pr(6);
+        } else if (i == 3) {
+            pr(28);
+        } else {
+            map<ll, ll> m = {
+                    {2, 4},
+                    {3, 8},
+                    {4, (i - 4) * 4 + 4},
+                    {6, (i - 4) * 4},
+                    {8, (i - 4) * (i - 4)}
+            };
+            ll kv = i * i;
+            ll ans = 0;
+            for (auto [a, b] : m) {
+                ans += b * (kv - 1 - a);
+            }
+            pr(ans / 2);
+        }
+    }
     return 0;
 }

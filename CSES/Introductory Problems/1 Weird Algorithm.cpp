@@ -1,11 +1,4 @@
 #include <iostream>
-#include <vector>
-#include <map>
-#include <unordered_map>
-#include <set>
-#include <unordered_set>
-#include <cmath>
-#include <algorithm>
 
 using namespace std;
 #define ll long long
@@ -32,21 +25,16 @@ using namespace std;
 
 #define M (int)(1e9+7)
 
- ll dv(ll v) {
-     ll ans = 1;
-     ll t = 2;
-     while (v) {
-         if (v % 2 == 1) {
-             ans = (ans * t) % M;
-         }
-         t = (t * t) % M;
-         v /= 2;
-     }
-     return ans;
- }
-
 int main() {
     ll n; cin >> n;
-    pr(dv(n));
+    while (n != 1) {
+        prs(n);
+        if (n % 2) {
+            n = 3 * n + 1;
+        } else {
+            n /= 2;
+        }
+    }
+    prs(1);
     return 0;
 }

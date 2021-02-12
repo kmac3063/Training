@@ -32,21 +32,19 @@ using namespace std;
 
 #define M (int)(1e9+7)
 
- ll dv(ll v) {
-     ll ans = 1;
-     ll t = 2;
-     while (v) {
-         if (v % 2 == 1) {
-             ans = (ans * t) % M;
-         }
-         t = (t * t) % M;
-         v /= 2;
-     }
-     return ans;
- }
-
 int main() {
-    ll n; cin >> n;
-    pr(dv(n));
+    int n; cin >> n;
+    vll v(n);
+    read(v);
+    ll t = v[0];
+    ll ans = 0;
+    for (int i = 1; i < n; i++) {
+        if (v[i] < t) {
+            ans += t - v[i];
+        } else {
+            t = v[i];
+        }
+    }
+    pr(ans);
     return 0;
 }
