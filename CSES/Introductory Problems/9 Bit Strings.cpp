@@ -32,16 +32,21 @@ using namespace std;
 
 #define M (int)(1e9+7)
 
+ ll dv(ll v) {
+     ll ans = 1;
+     ll t = 2;
+     while (v) {
+         if (v % 2 == 1) {
+             ans = (ans * t) % M;
+         }
+         t = (t * t) % M;
+         v /= 2;
+     }
+     return ans;
+ }
+
 int main() {
-    string s; cin >> s;
-    sort(all(s));
-    vector<string> v;
-    do {
-        v.pb(s);
-    } while (next_permutation(all(s)));
-    pr(sz(v));
-    fch(s1, v) {
-        pr(s1);
-    }
+    ll n; cin >> n;
+    pr(dv(n));
     return 0;
 }

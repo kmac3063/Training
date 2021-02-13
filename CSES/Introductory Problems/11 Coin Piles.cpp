@@ -33,15 +33,26 @@ using namespace std;
 #define M (int)(1e9+7)
 
 int main() {
-    string s; cin >> s;
-    sort(all(s));
-    vector<string> v;
-    do {
-        v.pb(s);
-    } while (next_permutation(all(s)));
-    pr(sz(v));
-    fch(s1, v) {
-        pr(s1);
+    int t; cin >> t;
+    while (t--) {
+        ll a, b; cin >> a >> b;
+        if ((a + b) % 3 != 0) {
+            pr("NO");
+            continue;
+        }
+        if (a == 0 || b == 0) {
+            if (a == b)
+                pr("YES");
+            else
+                pr("NO");
+            continue;
+        }
+        if (a < b) swap(a, b);
+        if (b * 2 >= a) {
+            pr("YES");
+        } else {
+            pr("NO");
+        }
     }
     return 0;
 }

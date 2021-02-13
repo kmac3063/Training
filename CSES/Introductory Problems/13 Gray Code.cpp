@@ -33,15 +33,17 @@ using namespace std;
 #define M (int)(1e9+7)
 
 int main() {
-    string s; cin >> s;
-    sort(all(s));
-    vector<string> v;
-    do {
-        v.pb(s);
-    } while (next_permutation(all(s)));
-    pr(sz(v));
-    fch(s1, v) {
-        pr(s1);
+    int n; cin >> n;
+    vector<string> v = {"0", "1"};
+    for (int i = 2; i <= n; ++i) {
+        vector<string> t;
+        for (int j = v.size() - 1; j >= 0; j--) {
+            t.pb("1" + string(i - v[j].size() - 1, '0') + v[j]);
+        }
+        v.ins(v.end(), all(t));
+    }
+    for (int i = 0; i < v.size(); ++i) {
+        pr(string(n - v[i].size(), '0') + v[i]);
     }
     return 0;
 }

@@ -32,16 +32,19 @@ using namespace std;
 
 #define M (int)(1e9+7)
 
-int main() {
-    string s; cin >> s;
-    sort(all(s));
-    vector<string> v;
-    do {
-        v.pb(s);
-    } while (next_permutation(all(s)));
-    pr(sz(v));
-    fch(s1, v) {
-        pr(s1);
+void hanoi(int n, int from, int help, int to) {
+    if (n == 1) {
+        cout << from << " " << to << endl;
+    } else {
+        hanoi(n - 1, from, to, help);
+        cout << from << " " << to << endl;
+        hanoi(n - 1, help, from, to);
     }
+}
+
+int main() {
+    int n; cin >> n;
+    pr((1<<n) - 1);
+    hanoi(n, 1, 2, 3);
     return 0;
 }

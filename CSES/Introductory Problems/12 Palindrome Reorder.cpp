@@ -34,14 +34,36 @@ using namespace std;
 
 int main() {
     string s; cin >> s;
-    sort(all(s));
-    vector<string> v;
-    do {
-        v.pb(s);
-    } while (next_permutation(all(s)));
-    pr(sz(v));
-    fch(s1, v) {
-        pr(s1);
+    map<char, int> m;
+    fch(ch, s) m[ch]++;
+    int even = 0;
+    int odd = 0;
+    char ch = 0;
+    fch(p, m) {
+        even += p.S % 2 == 0;
+        odd += p.S % 2 == 1;
+        if (p.S % 2 == 1) {
+            ch = p.F;
+        }
     }
+    if (sz(s) % 2 == 0 && odd > 0 || sz(s) % 2 && odd > 1) {
+        pr("NO SOLUTION");
+        return 0;
+    }
+    string ans(sz(s), 0);
+    if (odd) {
+        ans[ans.size() / 2] = ch;
+        m[ch]--;
+    }
+    int i = 0;
+    fch(p, m) {
+        while (p.S) {
+            ans[i] = ans[sz(s) - 1 - i] = p.F;
+            i++;
+            p.S -= 2;
+        }
+    }
+    pr(ans);
+
     return 0;
 }
