@@ -1,0 +1,68 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include <set>
+#include <unordered_set>
+#include <cmath>
+#include <algorithm>
+
+using namespace std;
+#define ll long long
+#define ld long double
+#define pb push_back
+#define vi vector<int>
+#define vll vector<ll>
+#define vvi vector<vi>
+#define vvll vector<vll>
+#define pii pair<int, int>
+#define pll pair<ll, ll>
+#define F first
+#define S second
+
+#define all(x) x.begin(), x.end()
+#define rev reverse
+#define pr(a) cout << a << endl
+#define prs(a) cout << a << ' '
+#define fori(i, a, n) for (int i = a; i < n; i++)
+#define fch(a, v) for (auto& a : v)
+#define sz(x) x.size()
+#define ins insert
+#define read(v) fch(_0, v) {cin >> _0;}
+
+#define M (int)(1e9+7)
+
+int main() {
+    int n, m, k;
+    cin >> n >> m >> k;
+    vector<int> v(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> v[i];
+    }
+
+    vector<int> v1(m);
+    for (int i = 0; i < m; ++i) {
+        cin >> v1[i];
+    }
+
+    sort(v.begin(), v.end());
+    sort(v1.begin(), v1.end());
+
+    int l = 0, r = 0;
+    int ans = 0;
+    while(l < n && r < m) {
+        if (abs(v1[r] - v[l]) <= k) {
+            l++;r++;ans++;
+            continue;
+        }
+
+        if (v1[r] < v[l]) {
+            r++;
+        } else {
+            l++;
+        }
+    }
+    cout << ans;
+
+    return 0;
+}
